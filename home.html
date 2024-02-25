@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home</title>
+    <style>
+body:before {
+            content: "";
+            background: url('coding.avif') no-repeat center center/cover;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            z-index: -1;
+            top: 0px;
+            left: 0px;
+        }
+
+                body {
+            background-color: black;
+            color: white;
+        }
+
+        #navbar {
+            background-color: rgb(88, 189, 229);
+            display: flex;
+            height: 80px;
+            align-items: center;
+            position: sticky;
+top: 0px;
+            left: 0px;
+                    }
+
+        #logo p {
+            font-size: 40px;
+            margin: 8px 8px;
+            color: darkgreen;
+        }
+
+        #navbar ul {
+            display: flex;
+            text-decoration: none;
+            list-style: none;
+            padding-right: 10px;
+            padding-left: 900px;
+        }
+
+        #navbar ul li {
+            margin: 0px 15px;
+            list-style: none;
+            text-decoration: none;
+            display: flex;
+        }
+
+        #navbar ul li a {
+            display: block;
+            padding: 3px 8px;
+            text-decoration: none;
+            color: darkgreen;
+            font-size: 18px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        #navbar ul li a:hover {
+            background-color: rgb(230, 230, 100);
+            border-radius: 8px;
+            color: black;
+        }
+
+        .container {
+            display: block;
+            height: 200px;
+            width: 500px;
+            margin: 120px 450px;
+            /* margin: auto auto; */
+            border: 3px solid greenyellow;
+            align-items: center;
+            border-radius: 15px;
+            background-color: rgb(140, 51, 223);
+            opacity: 0.9;
+
+            padding: 20px 15px;
+            background-image: linear-gradient(red, blue);
+            box-shadow: 8px 10px 10px yellow;
+
+        }
+
+        .container h2 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 10px;
+            margin: 12px 12px;
+            font-size: 18px;
+            border-radius: 10px;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            background-color: rgb(237, 237, 95);
+
+        }
+
+        .btn:hover {
+            color: black;
+            background-color: rgb(143, 208, 252);
+        }
+
+        .subcontainer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        footer {
+            margin: 4px 450px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav id="navbar">
+        <div id="logo">
+            <p>BYTE</p>
+        </div>
+        <ul>
+            <li class="items"><a href=dashboard.html>Dashboard</a></li>
+            <li class="items"><a href="#contact">Contact us</a></li>
+            <li class="items"><a href=register.html>Register</a></li>
+            <li class="items"><a href=login.html>Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h2>Welcome to BYTE Frontend recruitment</h2>
+        <div class="subcontainer">
+            <button class="btn" id="loginButton">Login</button>
+            <button class="btn" id="register">Register</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="end">
+            &copy; 2024 B.Y.T.E Frontend Challenge. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('loginButton').addEventListener('click', function (event) {
+            event.preventDefault();
+            window.location.href = 'login.html';
+        });
+        document.getElementById('register').addEventListener('click', function (event) {
+            event.preventDefault();
+            window.location.href = 'register.html';
+        })
+    </script>
+
+</body>
+
+</html>

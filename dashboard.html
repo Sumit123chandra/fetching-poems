@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dashboard</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+        }
+
+        #navbar {
+            background-color: rgb(88, 189, 229);
+            display: flex;
+            height: 80px;
+            align-items: center;
+            position: sticky;
+        }
+
+        #logo p {
+            font-size: 40px;
+            margin: 8px 8px;
+            color: darkgreen;
+        }
+
+        #navbar ul {
+            display: flex;
+            text-decoration: none;
+            list-style: none;
+            padding-right: 10px;
+            padding-left: 900px;
+        }
+
+        #navbar ul li {
+            margin: 0px 15px;
+            list-style: none;
+            text-decoration: none;
+            display: flex;
+        }
+
+        #navbar ul li a {
+            display: block;
+            padding: 3px 8px;
+            text-decoration: none;
+            color: darkgreen;
+            font-size: 18px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        #navbar ul li a:hover {
+            background-color: rgb(230, 230, 100);
+            border-radius: 8px;
+            color: black;
+        }
+
+        .box {
+            border: 2px solid green;
+            background-color: rgb(172, 172, 76);
+            border-radius: 10px;
+            width: 40%;
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+            /* align-items: center; */
+            justify-content: center;
+            margin: 50px 25px;
+            padding: 8px;
+        }
+
+        .box h2 {
+            color: rgb(100, 13, 183);
+            font-family: Georgia, 'Times New Roman', Times, serif;
+        }
+
+        #submit {
+            background-color: rgb(88, 206, 88);
+            color: black;
+            /* border: none; */
+            border: 2px solid black;
+            cursor: pointer;
+            font-size: 15px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            width: 60%;
+            display: block;
+            margin: auto;
+            border-radius: 8px;
+
+        }
+
+        #submit:hover {
+            background-color: rgb(10, 245, 10);
+        }
+
+        .new {
+            display: flex;
+            flex-direction: column;
+            /* align-items: center; */
+            justify-content: center;
+            width: 500px;
+            border: 2px solid red;
+            border-radius: 8px;
+            padding: 8px 8px;
+            margin: 5px 5px;
+        }
+
+        #author {
+            height: 25px;
+            border-radius: 8px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 18px;
+        }
+
+        #poem {
+            border-radius: 8px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 18px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <nav id="navbar">
+        <div id="logo">
+            <p>BYTE</p>
+        </div>
+        <ul>
+            <li class="items"><a href=dashboard.html>Dashboard</a></li>
+            <li class="items"><a href="#contact">Contact us</a></li>
+            <li class="items"><a href=register.html>Register</a></li>
+            <li class="items"><a href=login.html>Login</a></li>
+        </ul>
+    </nav>
+
+
+    <div class="container">
+        <div class="box">
+            <h2>User Details</h2>
+            <p><strong>Name:</strong> <span id="name">loading...</span></p>
+            <p><strong>Email:</strong> <span id="email">loading...</span></p>
+        </div>
+
+        <div class="new" id="poemsubmit">
+            <h2>Submit a new poem</h2>
+            <p>Poem</p>
+            <textarea name="poem" id="poem" cols="60" rows="12"></textarea>
+            <br>
+            <p>author's name</p>
+            <input type="text" name="author" id="author" placeholder="author name">
+            <br>
+            <button type="submit" id="submit">Submit</button>
+        </div>
+
+        <div class="new">
+            <h2>Poems after fetching</h2>
+            <ul id="poemList"></ul>
+
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('accessToken');
+        console.log('Token:', token); // Log the token to verify its value
+
+        // Fetch user details
+        fetch('http://panel.mait.ac.in:8001/auth/user-details/', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch user details');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const username = data.name;
+                const useremail = data.email;
+                document.getElementById('name').textContent = username;
+                document.getElementById('email').textContent = useremail;
+            })
+            .catch(error => {
+                alert("Error occurred while fetching user data!");
+            });
+
+        // Function to fetch poems
+        function fetchPoems() {
+            fetch('http://panel.mait.ac.in:8001/poem/get/', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch poems');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Display the poems on the page
+                    const poemList = document.getElementById('poemList');
+                    poemList.innerHTML = '';
+                    data.forEach(poem => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `${poem.poem} -- ${poem.author}`;
+                        poemList.appendChild(listItem);
+                    });
+                })
+                .catch(error => {
+                    console.log('Error fetching poems:', error);
+                });
+        }
+
+        // Event listener for submitting a new poem
+        document.getElementById('submit').addEventListener('click', function (event) {
+            event.preventDefault();
+            const poem = document.getElementById('poem').value;
+            const author = document.getElementById('author').value;
+            const poemdata = {
+                poem: poem,
+                author: author
+            };
+
+            // Submit poem
+            fetch('http://panel.mait.ac.in:8001/poem/create/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(poemdata)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Failed to submit poem');
+                    }
+                })
+                .then(data => {
+                    console.log('Poem submitted successfully:', data);
+                    document.getElementById('poem').value = '';
+                    document.getElementById('author').value = '';
+                    fetchPoems(); // Fetch poems again to update the list
+                })
+                .catch(error => {
+                    console.log('Error submitting poem:', error);
+                });
+        });
+
+        // Call functions to fetch poems when the page loads
+
+        fetchPoems();
+
+    </script>
+
+</body>
+
+</html>
